@@ -20,13 +20,17 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         
-        if ($request->email === 'admin@example.com' && $request->password === 'password') {
+        // Logika login menggunakan API eksternal
+        $response = Http::post('http://localhost:8002/api/login',[
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        if ($response->successful()){
             return redirect()->route('home');
         }
-
-
+        
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => 'Email Salah',
         ]);
 
 }
